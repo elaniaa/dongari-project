@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!--
+  SNAKE VS BLOCK — 동아리 축제용 미니게임 (1차 뼈대)
+  ------------------------------------------------------------------
+  Unity 연동 참고:
+  이 폴더(index.html, style.css, script.js)는 완전히 로컬/오프라인으로
+  동작하도록 만들어졌습니다 (외부 CDN, 웹폰트, 네트워크 요청 없음).
+  Unity에서 실행하려면 아래 두 방법 중 하나를 사용하세요.
+
+  방법 A) WebView 에셋 사용 (권장)
+    - Vuplex 3D WebView 또는 UniWebView 같은 에셋을 Unity 프로젝트에 추가
+    - 이 폴더 전체를 StreamingAssets 폴더 하위(예: StreamingAssets/SnakeVsBlock/)로 복사
+    - WebView 컴포넌트에 index.html의 로컬 경로(file:// 또는 StreamingAssets 경로)를 로드
+    - 3개 파일이 항상 같은 폴더에 함께 있어야 상대경로(style.css, script.js)가 깨지지 않습니다
+
+  방법 B) Unity WebGL 빌드에 얹기
+    - Unity WebGL 빌드 결과물의 index.html 대신, 이 게임을 별도 미니게임 페이지로 두고
+      Unity WebGL의 index.html에서 iframe 또는 새 창으로 이 index.html을 열 수 있습니다
+
+  코드에는 ES6 module, optional chaining 등 최신 문법을 피하고
+  script.js는 <script src="script.js"></script> 형태(모듈 아님)로 불러오므로
+  대부분의 WebView 런타임(Chromium 계열)에서 문제없이 동작합니다.
+  ------------------------------------------------------------------
+-->
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SNAKE VS BLOCK — 동아리 축제 미니게임</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="game-container">
+
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- HUD -->
+  <div id="hud">
+    <div class="hud-box">
+      <span class="hud-label">SCORE</span>
+      <span class="hud-value" id="scoreVal">0</span>
+    </div>
+    <div class="hud-box">
+      <span class="hud-label">LENGTH</span>
+      <span class="hud-value" id="lengthVal">10</span>
+    </div>
+  </div>
+
+  <button id="pauseBtn" aria-label="일시정지" title="일시정지">
+    <span class="pause-icon"></span>
+  </button>
+
+  <!-- 시작 화면 -->
+  <div id="startOverlay" class="overlay">
+    <h1 class="title">SNAKE <span class="vs">VS</span> BLOCK</h1>
+    <p class="sub">방향키로 뱀을 움직여 숫자 블록을 부수세요</p>
+    <ul class="rules">
+      <li>블록 숫자 &lt; 내 길이 → 블록 파괴 + 길이 감소</li>
+      <li>블록 숫자 ≥ 내 길이 → 게임 오버</li>
+      <li>동그란 먹이(+n)를 먹으면 길이가 n만큼 증가</li>
+    </ul>
+    <p class="hint blink">SPACE 또는 화면 클릭으로 시작</p>
+  </div>
+
+  <!-- 일시정지 화면 -->
+  <div id="pauseOverlay" class="overlay hidden">
+    <h2>일시정지</h2>
+    <button id="resumeBtn" class="btn">계속하기</button>
+  </div>
+
+  <!-- 게임 오버 화면 -->
+  <div id="gameoverOverlay" class="overlay hidden">
+    <h2 class="gameover-title">GAME OVER</h2>
+    <p class="result">최종 점수 <span id="finalScore">0</span></p>
+    <p class="result">최대 길이 <span id="finalLength">0</span></p>
+    <button id="restartBtn" class="btn">다시 시작 (R)</button>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
